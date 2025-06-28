@@ -3,6 +3,7 @@
 const firebaseConfig = {
   apiKey: "AIzaSyAKhP-daIeMWQow75eQugLoAz91yz5Bvyw",
   authDomain: "footballpredictzone.firebaseapp.com",
+  databaseURL: "https://footballpredictzone-default-rtdb.firebaseio.com",
   projectId: "footballpredictzone",
   storageBucket: "footballpredictzone.appspot.com",
   messagingSenderId: "762705283046",
@@ -10,7 +11,7 @@ const firebaseConfig = {
   measurementId: "G-47HBZKY6W3"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 function adminLogin() {
@@ -75,9 +76,11 @@ function saveTips() {
   database.ref('predictions/current').set({ date, tips })
     .then(() => {
       alert("✅ Predictions saved to Firebase!");
+      console.log("Saved:", { date, tips });
     })
     .catch(error => {
       alert("❌ Failed to save: " + error.message);
+      console.error("Firebase Save Error:", error);
     });
 }
 
