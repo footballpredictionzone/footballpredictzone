@@ -7,31 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
     <h1>Admin Panel</h1>
-    <p>Post today's football predictions</p>
+    <p>Secure login to post predictions</p>
   </header>
 
   <div class="container">
     <div id="loginBox">
-      <input type="text" placeholder="Username" id="adminUser"><br>
-      <input type="password" placeholder="Password" id="adminPass"><br>
-      <button onclick="adminLogin()">Login</button>
+      <input type="email" placeholder="Email" id="email"><br>
+      <input type="password" placeholder="Password" id="password"><br>
+      <button onclick="firebaseLogin()">🔐 Login</button>
+      <p id="loginError" style="color:red; font-weight:bold;"></p>
     </div>
 
     <div id="adminPanel" style="display:none;">
-      <p>
-        <label for="tipDate"><strong>Prediction Date:</strong></label><br>
-        <input type="date" id="tipDate">
-      </p>
+      <label for="tipDate">📅 Prediction Date:</label>
+      <input type="date" id="tipDate" style="padding:10px; font-size:1rem; width:100%; max-width:300px; margin-bottom:15px;"><br>
       <div id="tipInputs"></div>
       <button onclick="addTip()">➕ Add Match</button>
       <button onclick="saveTips()">✅ Post Predictions</button>
-      <button onclick="logoutAdmin()">🔒 Logout</button>
+      <button onclick="logoutFirebase()">🚪 Logout</button>
       <p id="debugError" style="color:red; font-weight:bold;"></p>
     </div>
   </div>

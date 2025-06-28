@@ -1,5 +1,5 @@
 
-
+// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAKhP-daIeMWQow75eQugLoAz91yz5Bvyw",
   authDomain: "footballpredictzone.firebaseapp.com",
@@ -12,34 +12,48 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.database();
 
-function adminLogin() {
-  const user = document.getElementById("adminUser").value;
-  const pass = document.getElementById("adminPass").value;
-  if (user === "admin" && pass === "1234") {
-    localStorage.setItem("admin", "true");
+// Login function
+function firebaseLogin() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("adminPanel").style.display = "block";
+      loadForm();
+    })
+    .catch(error => {
+      document.getElementById("loginError").textContent = error.message;
+    });
+}
+
+function logoutFirebase() {
+  firebase.auth().signOut().then(() => {
+    location.reload();
+  });
+}
+
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("adminPanel").style.display = "block";
     loadForm();
   } else {
-    alert("Invalid credentials");
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("adminPanel").style.display = "none";
   }
-}
-
-function logoutAdmin() {
-  localStorage.removeItem("admin");
-  location.reload();
-}
+});
 
 function loadForm() {
   const inputs = document.getElementById("tipInputs");
   inputs.innerHTML = "";
   for (let i = 0; i < 5; i++) {
     inputs.innerHTML += `
-      <div>
+      <div style="margin-bottom: 10px;">
         <input type="text" placeholder="Match (e.g. Chelsea vs Arsenal)" id="match${i}">
-        <input type="text" placeholder="Prediction (e.g. Over 2.5 goals)" id="pred${i}">
+        <input type="text" placeholder="Prediction (e.g. 2:1)" id="pred${i}">
       </div>
     `;
   }
@@ -48,48 +62,40 @@ function loadForm() {
 
 function addTip() {
   const inputs = document.getElementById("tipInputs");
-  const count = inputs.children.length / 2;
-  inputs.innerHTML += `
-    <div>
-      <input type="text" placeholder="Match" id="match${count}">
-      <input type="text" placeholder="Prediction" id="pred${count}">
-    </div>
+  const index = inputs.children.length;
+  const div = document.createElement("div");
+  div.style.marginBottom = "10px";
+  div.innerHTML = `
+    <input type="text" placeholder="Match" id="match${index}">
+    <input type="text" placeholder="Prediction" id="pred${index}">
   `;
+  inputs.appendChild(div);
 }
 
 function saveTips() {
-  const inputs = document.getElementById("tipInputs");
-  const tips = [];
-  for (let i = 0; i < inputs.children.length; i += 2) {
-    const match = document.getElementById("match" + (i / 2)).value;
-    const pred = document.getElementById("pred" + (i / 2)).value;
-    if (match && pred) {
-      tips.push({ match, prediction: pred });
+  const date = document.getElementById("tipDate").value;
+  const inputs = document.getElementById("tipInputs").children;
+  const predictions = [];
+
+  for (let i = 0; i < inputs.length; i++) {
+    const match = document.getElementById("match" + i).value;
+    const prediction = document.getElementById("pred" + i).value;
+    if (match && prediction) {
+      predictions.push({ match, prediction });
     }
   }
-  const date = document.getElementById("tipDate").value;
-  if (!date || tips.length === 0) {
-    alert("Please enter a date and at least one prediction.");
+
+  if (predictions.length === 0) {
+    document.getElementById("debugError").textContent = "❌ Add at least one prediction.";
     return;
   }
 
-  database.ref('predictions/current').set({ date, tips })
+  db.ref("predictions/" + date).set(predictions)
     .then(() => {
-      alert("✅ Predictions saved to Firebase!");
-      console.log("Saved:", { date, tips });
+      alert("✅ Predictions saved!");
+      location.reload();
     })
     .catch(error => {
-      alert("❌ Failed to save: " + error.message);
-      console.error("Firebase Save Error:", error);
+      document.getElementById("debugError").textContent = error.message;
     });
 }
-
-window.onload = function () {
-  if (location.pathname.includes("admin.html")) {
-    if (localStorage.getItem("admin") === "true") {
-      document.getElementById("loginBox").style.display = "none";
-      document.getElementById("adminPanel").style.display = "block";
-      loadForm();
-    }
-  }
-};
