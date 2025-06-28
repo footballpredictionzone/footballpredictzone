@@ -5,6 +5,8 @@
   <title>Football Predict Zone</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 </head>
 <body>
   <header>
@@ -14,32 +16,46 @@
 
   <div class="container" id="predictions">
     <h2 id="predictionDate">🔮 Predictions</h2>
-    <div id="tipList">
-      <!-- Tips will appear here -->
-    </div>
+    <div id="tipList"></div>
   </div>
 
   <footer>&copy; 2025 Football Predict Zone</footer>
 
   <script>
-    const tipsData = JSON.parse(localStorage.getItem("tipsData") || "{}");
+    
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAKhP-daIeMWQow75eQugLoAz91yz5Bvyw",
+  authDomain: "footballpredictzone.firebaseapp.com",
+  projectId: "footballpredictzone",
+  storageBucket: "footballpredictzone.firebasestorage.app",
+  messagingSenderId: "762705283046",
+  appId: "1:762705283046:web:c9e5a9c0d71fca39f03827",
+  measurementId: "G-47HBZKY6W3"
+};
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
     const tipList = document.getElementById("tipList");
     const predictionDate = document.getElementById("predictionDate");
 
-    if (!tipsData.date || !tipsData.tips || tipsData.tips.length === 0) {
-      tipList.innerHTML = "<div class='tip-card'><p>No predictions posted yet.</p></div>";
-    } else {
-      const date = new Date(tipsData.date);
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      predictionDate.innerText = `🔮 Predictions for ${date.toLocaleDateString(undefined, options)}`;
-
-      tipsData.tips.forEach(tip => {
-        const div = document.createElement("div");
-        div.className = "tip-card";
-        div.innerHTML = `<strong>Match:</strong> ${tip.match}<br><strong>Prediction:</strong> ${tip.prediction}`;
-        tipList.appendChild(div);
-      });
-    }
+    database.ref('predictions/current').once('value', snapshot => {
+      const data = snapshot.val();
+      if (!data || !data.date || !data.tips || data.tips.length === 0) {
+        tipList.innerHTML = "<div class='tip-card'><p>No predictions posted yet.</p></div>";
+      } else {
+        const date = new Date(data.date);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        predictionDate.innerText = `🔮 Predictions for ${date.toLocaleDateString(undefined, options)}`;
+        data.tips.forEach(tip => {
+          const div = document.createElement("div");
+          div.className = "tip-card";
+          div.innerHTML = `<strong>Match:</strong> ${tip.match}<br><strong>Prediction:</strong> ${tip.prediction}`;
+          tipList.appendChild(div);
+        });
+      }
+    });
   </script>
 </body>
 </html>

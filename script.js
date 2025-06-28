@@ -1,3 +1,19 @@
+
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAKhP-daIeMWQow75eQugLoAz91yz5Bvyw",
+  authDomain: "footballpredictzone.firebaseapp.com",
+  projectId: "footballpredictzone",
+  storageBucket: "footballpredictzone.firebasestorage.app",
+  messagingSenderId: "762705283046",
+  appId: "1:762705283046:web:c9e5a9c0d71fca39f03827",
+  measurementId: "G-47HBZKY6W3"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 function adminLogin() {
   const user = document.getElementById("adminUser").value;
   const pass = document.getElementById("adminPass").value;
@@ -56,9 +72,16 @@ function saveTips() {
     alert("Please enter a date and at least one prediction.");
     return;
   }
-  localStorage.setItem("tipsData", JSON.stringify({ date, tips }));
-  alert("✅ Predictions saved!");
+
+  database.ref('predictions/current').set({ date, tips })
+    .then(() => {
+      alert("✅ Predictions saved to Firebase!");
+    })
+    .catch(error => {
+      alert("❌ Failed to save: " + error.message);
+    });
 }
+
 window.onload = function () {
   if (location.pathname.includes("admin.html")) {
     if (localStorage.getItem("admin") === "true") {
