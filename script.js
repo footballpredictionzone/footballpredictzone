@@ -1,13 +1,15 @@
 function submitPredictions() {
-  const pred1 = document.getElementById('pred1').value;
-  const pred2 = document.getElementById('pred2').value;
-
-  if (!pred1 || !pred2) {
-    document.getElementById('result').innerText = "❗ Please select predictions for all matches.";
-    return;
+  const preds = [];
+  for (let i = 1; i <= 5; i++) {
+    const val = document.getElementById('pred' + i).value;
+    if (!val) {
+      document.getElementById('result').innerText = "❗ Please select predictions for all matches.";
+      return;
+    }
+    preds.push(val);
   }
-
-  document.getElementById('result').innerText = `✅ Your Predictions:\n1. Chelsea vs Liverpool: ${pred1}\n2. PSG vs Bayern: ${pred2}`;
+  document.getElementById('result').innerText =
+    `✅ Your Predictions:\n1. ${preds[0]}\n2. ${preds[1]}\n3. ${preds[2]}\n4. ${preds[3]}\n5. ${preds[4]}`;
 }
 
 function adminLogin() {

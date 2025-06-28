@@ -4,20 +4,17 @@ body {
   background: #f9f9f9;
   color: #222;
 }
-
 header {
   background: #007b33;
   color: white;
   padding: 1rem;
   text-align: center;
 }
-
 .container {
   max-width: 800px;
   margin: auto;
   padding: 1rem;
 }
-
 .match, .form-box, .admin-box {
   background: #fff;
   margin-bottom: 1rem;
@@ -25,25 +22,21 @@ header {
   border-radius: 6px;
   box-shadow: 0 0 5px rgba(0,0,0,0.05);
 }
-
 select, input, button {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
   font-size: 1rem;
 }
-
 button {
   background: #007b33;
   color: white;
   border: none;
   cursor: pointer;
 }
-
 button:hover {
   background: #005a25;
 }
-
 footer {
   text-align: center;
   padding: 1rem;
@@ -51,7 +44,6 @@ footer {
   color: white;
   margin-top: 2rem;
 }
-
 @media (max-width: 600px) {
   .container {
     padding: 10px;
