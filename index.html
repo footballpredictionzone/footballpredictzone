@@ -9,61 +9,30 @@
 <body>
   <header>
     <h1>Football Predict Zone</h1>
-    <p>Make your predictions!</p>
+    <p>Admin-curated predictions for today</p>
   </header>
 
-  <div class="container" id="predictionForm">
-    <div class="match">
-      <div class="teams">Chelsea vs Liverpool</div>
-      <select id="pred1">
-        <option value="">-- Choose Prediction --</option>
-        <option value="Chelsea">Chelsea Wins</option>
-        <option value="Liverpool">Liverpool Wins</option>
-      </select>
-    </div>
-
-    <div class="match">
-      <div class="teams">PSG vs Bayern</div>
-      <select id="pred2">
-        <option value="">-- Choose Prediction --</option>
-        <option value="PSG">PSG Wins</option>
-        <option value="Bayern">Bayern Wins</option>
-      </select>
-    </div>
-
-    <div class="match">
-      <div class="teams">Real Madrid vs Barcelona</div>
-      <select id="pred3">
-        <option value="">-- Choose Prediction --</option>
-        <option value="Real Madrid">Real Madrid Wins</option>
-        <option value="Barcelona">Barcelona Wins</option>
-      </select>
-    </div>
-
-    <div class="match">
-      <div class="teams">Man City vs Arsenal</div>
-      <select id="pred4">
-        <option value="">-- Choose Prediction --</option>
-        <option value="Man City">Man City Wins</option>
-        <option value="Arsenal">Arsenal Wins</option>
-      </select>
-    </div>
-
-    <div class="match">
-      <div class="teams">Juventus vs AC Milan</div>
-      <select id="pred5">
-        <option value="">-- Choose Prediction --</option>
-        <option value="Juventus">Juventus Wins</option>
-        <option value="AC Milan">AC Milan Wins</option>
-      </select>
-    </div>
-
-    <button onclick="submitPredictions()">Submit</button>
-    <div id="result"></div>
+  <div class="container" id="predictions">
+    <h2>🔮 Today's Predictions</h2>
+    <ul id="tipList">
+      <!-- Tips will appear here -->
+    </ul>
   </div>
 
   <footer>&copy; 2025 Football Predict Zone</footer>
 
-  <script src="script.js"></script>
+  <script>
+    const tips = JSON.parse(localStorage.getItem("tips") || "[]");
+    const list = document.getElementById("tipList");
+    if (tips.length === 0) {
+      list.innerHTML = "<li>No predictions posted yet.</li>";
+    } else {
+      tips.forEach(tip => {
+        const li = document.createElement("li");
+        li.textContent = `⚽ ${tip.match}: ${tip.prediction}`;
+        list.appendChild(li);
+      });
+    }
+  </script>
 </body>
 </html>
