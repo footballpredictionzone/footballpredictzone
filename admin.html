@@ -1,34 +1,41 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Admin - Football Predict Zone</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="script.js"></script>
 </head>
 <body>
   <header>
     <h1>Admin Panel</h1>
+    <p>Post today's football predictions</p>
   </header>
 
-  <div class="container" id="loginBox">
-    <h2>Login</h2>
-    <input type="text" id="adminUser" placeholder="Username" />
-    <input type="password" id="adminPass" placeholder="Password" />
-    <button onclick="adminLogin()">Login</button>
-  </div>
+  <div class="container">
+    <div id="loginBox">
+      <input type="text" placeholder="Username" id="adminUser"><br>
+      <input type="password" placeholder="Password" id="adminPass"><br>
+      <button onclick="adminLogin()">Login</button>
+    </div>
 
-  <div class="container" id="adminPanel" style="display:none;">
-    <h2>Post Predictions</h2>
-    <input type="date" id="tipDate" />
-    <div id="tipInputs"></div>
-    <button onclick="addTip()">+ Add Match</button>
-    <button onclick="saveTips()">✅ Post Predictions</button>
-    <button onclick="logoutAdmin()">Logout</button>
+    <div id="adminPanel" style="display:none;">
+      <p>
+        <label for="tipDate"><strong>Prediction Date:</strong></label><br>
+        <input type="date" id="tipDate">
+      </p>
+      <div id="tipInputs"></div>
+      <button onclick="addTip()">➕ Add Match</button>
+      <button onclick="saveTips()">✅ Post Predictions</button>
+      <button onclick="logoutAdmin()">🔒 Logout</button>
+      <p id="debugError" style="color:red; font-weight:bold;"></p>
+    </div>
   </div>
 
   <footer>&copy; 2025 Football Predict Zone</footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
