@@ -9,28 +9,35 @@
 <body>
   <header>
     <h1>Football Predict Zone</h1>
-    <p>Admin-curated predictions for today</p>
+    <p>Expert Predictions, Daily</p>
   </header>
 
   <div class="container" id="predictions">
-    <h2>🔮 Today's Predictions</h2>
-    <ul id="tipList">
+    <h2 id="predictionDate">🔮 Predictions</h2>
+    <div id="tipList">
       <!-- Tips will appear here -->
-    </ul>
+    </div>
   </div>
 
   <footer>&copy; 2025 Football Predict Zone</footer>
 
   <script>
-    const tips = JSON.parse(localStorage.getItem("tips") || "[]");
-    const list = document.getElementById("tipList");
-    if (tips.length === 0) {
-      list.innerHTML = "<li>No predictions posted yet.</li>";
+    const tipsData = JSON.parse(localStorage.getItem("tipsData") || "{}");
+    const tipList = document.getElementById("tipList");
+    const predictionDate = document.getElementById("predictionDate");
+
+    if (!tipsData.date || !tipsData.tips || tipsData.tips.length === 0) {
+      tipList.innerHTML = "<div class='tip-card'><p>No predictions posted yet.</p></div>";
     } else {
-      tips.forEach(tip => {
-        const li = document.createElement("li");
-        li.textContent = `⚽ ${tip.match}: ${tip.prediction}`;
-        list.appendChild(li);
+      const date = new Date(tipsData.date);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      predictionDate.innerText = `🔮 Predictions for ${date.toLocaleDateString(undefined, options)}`;
+
+      tipsData.tips.forEach(tip => {
+        const div = document.createElement("div");
+        div.className = "tip-card";
+        div.innerHTML = `<strong>Match:</strong> ${tip.match}<br><strong>Prediction:</strong> ${tip.prediction}`;
+        tipList.appendChild(div);
       });
     }
   </script>

@@ -27,6 +27,7 @@ function loadForm() {
       </div>
     `;
   }
+  document.getElementById("tipDate").valueAsDate = new Date();
 }
 
 function addTip() {
@@ -50,11 +51,12 @@ function saveTips() {
       tips.push({ match, prediction: pred });
     }
   }
-  if (tips.length === 0) {
-    alert("Please enter at least one prediction.");
+  const date = document.getElementById("tipDate").value;
+  if (!date || tips.length === 0) {
+    alert("Please enter a date and at least one prediction.");
     return;
   }
-  localStorage.setItem("tips", JSON.stringify(tips));
+  localStorage.setItem("tipsData", JSON.stringify({ date, tips }));
   alert("✅ Predictions saved!");
 }
 window.onload = function () {
