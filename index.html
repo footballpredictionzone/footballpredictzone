@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Football Predict Zone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free Football Predictions Website - Football Predict Zone">
+  <meta name="keywords" content="football prediction, footballpredictzone, free tips, betting tips, soccer predictions">
+  <meta name="author" content="Football Predict Zone">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Football Predict Zone</h1>
+    <p>Make your predictions!</p>
+  </header>
+
+  <div class="container" id="predictionForm">
+    <div class="match">
+      <div class="teams">Chelsea vs Liverpool</div>
+      <select id="pred1">
+        <option value="">-- Choose Prediction --</option>
+        <option value="Chelsea">Chelsea Wins</option>
+        <option value="Draw">Draw</option>
+        <option value="Liverpool">Liverpool Wins</option>
+      </select>
+    </div>
+
+    <div class="match">
+      <div class="teams">PSG vs Bayern</div>
+      <select id="pred2">
+        <option value="">-- Choose Prediction --</option>
+        <option value="PSG">PSG Wins</option>
+        <option value="Draw">Draw</option>
+        <option value="Bayern">Bayern Wins</option>
+      </select>
+    </div>
+
+    <button onclick="submitPredictions()">Submit</button>
+    <div id="result"></div>
+  </div>
+
+  <footer>&copy; 2025 Football Predict Zone</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
